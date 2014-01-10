@@ -1,40 +1,59 @@
-#!/usr/bin/python
+#!/usr/bin/python2.6
 
 import sys
 
-if (len(sys.argv) != 3):
+if (len(sys.argv) < 3):
     print "Usage: " + sys.argv[0] + " github-user github-project"
     exit(1)
 
 import pycurl
 import cStringIO
 import json
- 
-buf = cStringIO.StringIO()
- 
-c = pycurl.Curl()
-c.setopt(c.URL, 'https://api.github.com/repos/' + sys.argv[1] + '/' + sys.argv[2] + '/releases')
-c.setopt(c.WRITEFUNCTION, buf.write)
-c.perform()
- 
-obj = buf.getvalue()
-buf.close()
+
 
 def dict_to_object(d):
-    if '__class__' in d:
-        class_name = d.pop('__class__')
-        module_name = d.pop('__module__')
-        module = __import__(module_name)
-        class_ = getattr(module, class_name)
-        args = dict( (key.encode('ascii'), value) for key, value in d.items())
-        inst = class_(**args)
-    else:
-        inst = d
-    return inst
+  if '__class__' in d:
+      class_name = d.pop('__class__')
+      module_name = d.pop('__module__')
+      module = __import__(module_name)
+      class_ = getattr(module, class_name)
+      args = dict((key.encode('ascii'), value) for key, value in d.items())
+      inst = class_(**args)
+  else:
+      inst = d
+  return inst
 
-myobj = json.loads(obj, object_hook=dict_to_object)
 
-for p in myobj:
+full_names = []
+
+if sys.argv[2]:
+  full_names[0] = sys.argv[1] + "/" + sys.argv[1]
+else:
+  buf = cStringIO.StringIO()
+
+  c = pycurl.Curl()
+  c.setopt(c.URL, 'https://api.github.com/repos/' + sys.argv[1] + '/' + sys.argv[2] + '/releases')
+  c.setopt(c.WRITEFUNCTION, buf.write)
+  c.perform()
+
+  obj = buf.getvalue()
+  buf.close()
+
+for full_name in full_names: 
+  buf = cStringIO.StringIO()
+ 
+  c = pycurl.Curl()
+  c.setopt(c.URL, 'https://api.github.com/repos/' + full_name + '/releases')
+  c.setopt(c.WRITEFUNCTION, buf.write)
+  c.perform()
+ 
+  obj = buf.getvalue()
+  buf.close()
+
+
+  myobj = json.loads(obj, object_hook=dict_to_object)
+
+  for p in myobj:
     if "assets" in p:
         for asset in p['assets']:
   	    print asset['name'] + ": " + str(asset['download_count']) + " downloads"
