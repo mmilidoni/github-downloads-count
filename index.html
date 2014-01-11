@@ -259,16 +259,23 @@ button::-moz-focus-inner {
 <b><a href="https://github.com/mmilidoni/github-downloads-count/releases">Download latest version</a></b> - <a href="https://github.com/mmilidoni/github-downloads-count">Project on GitHub</a>
 </p>
 
-<p>This script get downloads count of projects on GitHub.</p>
-<p>Developer must uploads archive files as release, as example on <a href="https://github.com/blog/1547-release-your-software">GitHub Blog - Release Your Software</a>.</p>
-<p>To get downloads count you need to launch:</p>
-<p><code>./gdc github-username github-projectname</code> (no password needed)</p>
+<p>This script get downloads count of projects hosted on GitHub.</p>
+<p>Developers must uploads archive files as release, an example is on <a href="https://github.com/blog/1547-release-your-software">GitHub Blog - Release Your Software</a>.</p>
+<p>To get downloads count, you need to launch (no password needed):</p>
+<pre><code>./gdc github-username
+</code></pre>
+<p>You can specify one project (no password needed):</p>
+<pre><code>./gdc github-username github-projectname
+</code></pre>
 <p>For example:</p>
-<p><code>./gdc mmilidoni abs</code></p>
+<pre><code>./gdc rethinkdb
+</code></pre>
 <p>output is:</p>
-<p><code>abs-0.1-beta.zip: 2 downloads</code></p>
-
-<br/>
+<pre><code>rethinkdb-1.7.0.dmg: 454 downloads
+rethinkdb-1.7.0.i686.rpm: 449 downloads
+rethinkdb-1.7.0.x86_64.rpm: 450 downloads
+rethinkdb-1.6.1.dmg: 455 downloads
+</code></pre>
 <p>Please signal issues and requests on <a href="https://github.com/mmilidoni/github-downloads-count">Project page</a></p>
 
 </body></html>
