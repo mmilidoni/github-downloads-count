@@ -6,7 +6,13 @@ if (len(sys.argv) < 2):
     print "Usage: " + sys.argv[0] + " github-user [github-project]"
     exit(1)
 
-import pycurl
+try:
+   import requests
+except ImportError:
+    print "Error: requests is not installed"
+    print "Installing Requests is simple with pip:\n  pip install requests"
+    print "More info: http://docs.python-requests.org/en/latest/"
+    exit(1)
 import cStringIO
 import json
 
@@ -35,15 +41,8 @@ if len(sys.argv) == 3:
     full_names[0] = sys.argv[1] + "/" + sys.argv[1]
 else:
     buf = cStringIO.StringIO()
-
-    c = pycurl.Curl()
-    c.setopt(c.URL, 'https://api.github.com/users/' + sys.argv[1] + '/repos')
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.perform()
-
-    obj = buf.getvalue()
-    buf.close()
-    myobj = json.loads(obj, object_hook=dict_to_object)
+    r = requests.get('https://api.github.com/users/' + sys.argv[1] + "/repos")
+    myobj = r.json()
 
     for rep in myobj:
         full_names.insert(0, ensure_str(rep['full_name']))
@@ -51,16 +50,8 @@ else:
 
 for full_name in full_names:
     buf = cStringIO.StringIO()
-
-    c = pycurl.Curl()
-    c.setopt(c.URL, 'https://api.github.com/repos/' + full_name + '/releases')
-    c.setopt(c.WRITEFUNCTION, buf.write)
-    c.perform()
-
-    obj = buf.getvalue()
-    buf.close()
-
-    myobj = json.loads(obj, object_hook=dict_to_object)
+    r = requests.get('https://api.github.com/repos/' + full_name + '/releases')
+    myobj = r.json()
 
     for p in myobj:
         if "assets" in p:
