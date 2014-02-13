@@ -38,7 +38,7 @@ def ensure_str(s):
 full_names = []
 
 if len(sys.argv) == 3:
-    full_names[0] = sys.argv[1] + "/" + sys.argv[1]
+    full_names.append(sys.argv[1] + "/" + sys.argv[2])
 else:
     buf = cStringIO.StringIO()
     r = requests.get('https://api.github.com/users/' + sys.argv[1] + "/repos")
