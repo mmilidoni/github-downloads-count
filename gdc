@@ -41,7 +41,7 @@ if len(sys.argv) == 3:
     full_names.append(sys.argv[1] + "/" + sys.argv[2])
 else:
     buf = cStringIO.StringIO()
-    r = requests.get('https://api.github.com/users/' + sys.argv[1] + "/repos")
+    r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos')
     myobj = r.json()
 
     for rep in myobj:
@@ -50,13 +50,16 @@ else:
 
 for full_name in full_names:
     buf = cStringIO.StringIO()
-    r = requests.get('https://api.github.com/repos/' + full_name + '/releases')
-    myobj = r.json()
+    try:
+        r = requests.get('https://api.github.com/repos/' + full_name + '/releases')
+        myobj = r.json()
 
-    for p in myobj:
-        if "assets" in p:
-            for asset in p['assets']:
-                print (asset['name'] + ": " + str(asset['download_count']) +
-                       " downloads")
-        else:
-            print "No data"
+        for p in myobj:
+            if "assets" in p:
+                for asset in p['assets']:
+                    print (asset['name'] + ": " + str(asset['download_count']) +
+                           " downloads")
+            else:
+                print "No data"
+    except:
+        pass
