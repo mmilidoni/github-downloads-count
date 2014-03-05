@@ -62,8 +62,10 @@ for full_name in full_names:
         for p in myobj:
             if "assets" in p:
                 for asset in p['assets']:
-                    print (asset['name'] + ": " + str(asset['download_count']) +
-                           " downloads")
+                    print('%d\t%s'%(
+                        asset['download_count'],
+                        asset['name'],
+                    ))
             else:
                 print "No data"
     except:
