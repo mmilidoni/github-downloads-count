@@ -62,8 +62,10 @@ for full_name in full_names:
         for p in myobj:
             if "assets" in p:
                 for asset in p['assets']:
-                    print('%d\t%s'%(
+                    date = asset['updated_at'].split('T')[0]
+                    print('%d\t%s\t%s'%(
                         asset['download_count'],
+                        date,
                         asset['name'],
                     ))
             else:
