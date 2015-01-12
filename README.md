@@ -24,5 +24,7 @@ output is:
     rethinkdb-1.7.0.x86_64.rpm: 450 downloads
     rethinkdb-1.6.1.dmg: 455 downloads
 
+To authenticate with GitHub, fetch an OATH token from your GitHub user settings and export it in your shell as $GITHUB_TOKEN.
+
 Please signal issues and requests on [Project page](https://github.com/mmilidoni/github-downloads-count)
 

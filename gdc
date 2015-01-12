@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 
 if (len(sys.argv) < 2):
@@ -36,12 +37,16 @@ def ensure_str(s):
     return s
 
 full_names = []
+headers = {}
+
+if "GITHUB_TOKEN" in os.environ:
+    headers["Authorization"] = "token %s" % os.environ["GITHUB_TOKEN"]
 
 if len(sys.argv) == 3:
     full_names.append(sys.argv[1] + "/" + sys.argv[2])
 else:
     buf = cStringIO.StringIO()
-    r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos')
+    r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos', headers=headers)
     myobj = r.json()
 
     for rep in myobj:
@@ -51,7 +56,7 @@ else:
 for full_name in full_names:
     buf = cStringIO.StringIO()
     try:
-        r = requests.get('https://api.github.com/repos/' + full_name + '/releases')
+        r = requests.get('https://api.github.com/repos/' + full_name + '/releases', headers=headers)
         myobj = r.json()
 
         for p in myobj:
