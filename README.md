@@ -23,6 +23,8 @@ output is:
     rethinkdb-1.7.0.i686.rpm: 449 downloads
     rethinkdb-1.7.0.x86_64.rpm: 450 downloads
     rethinkdb-1.6.1.dmg: 455 downloads
+    
+A tutorial how to run python scripts on Windows can be found [here](http://pythoncentral.io/execute-python-script-file-shell/ "How to Run a Python Script via a File or the Shell").
 
 To authenticate with GitHub, fetch an OATH token from your GitHub user settings and export it in your shell as $GITHUB_TOKEN.
 
