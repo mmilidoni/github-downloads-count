@@ -4,17 +4,22 @@ import os
 import sys
 
 if (len(sys.argv) < 2):
-    print "Usage: " + sys.argv[0] + " github-user [github-project]"
+    print ("Usage: " + sys.argv[0] + " github-user [github-project]")
     exit(1)
 
 try:
    import requests
 except ImportError:
-    print "Error: requests is not installed"
-    print "Installing Requests is simple with pip:\n  pip install requests"
-    print "More info: http://docs.python-requests.org/en/latest/"
+    print ("Error: requests is not installed")
+    print ("Installing Requests is simple with pip:\n  pip install requests")
+    print ("More info: http://docs.python-requests.org/en/latest/")
     exit(1)
-import cStringIO
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import json
 
 
@@ -32,8 +37,11 @@ def dict_to_object(d):
 
 
 def ensure_str(s):
-    if isinstance(s, unicode):
-        s = s.encode('utf-8')
+    if isinstance(s,  type(u'e') ):
+        try:
+            s = s.encode('utf-8')
+        except:
+            pass
     return s
 
 full_names = []
@@ -45,7 +53,7 @@ if "GITHUB_TOKEN" in os.environ:
 if len(sys.argv) == 3:
     full_names.append(sys.argv[1] + "/" + sys.argv[2])
 else:
-    buf = cStringIO.StringIO()
+    buf = StringIO()
     r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos', headers=headers)
     myobj = r.json()
 
@@ -54,7 +62,7 @@ else:
 
 
 for full_name in full_names:
-    buf = cStringIO.StringIO()
+    buf = StringIO()
     try:
         r = requests.get('https://api.github.com/repos/' + full_name + '/releases', headers=headers)
         myobj = r.json()
@@ -65,6 +73,6 @@ for full_name in full_names:
                     print (asset['name'] + ": " + str(asset['download_count']) +
                            " downloads")
             else:
-                print "No data"
+                print ("No data")
     except:
         pass
