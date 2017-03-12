@@ -1,19 +1,19 @@
 GitHub Downloads Count
 ======================
 
-This script get downloads count of projects hosted on GitHub.
+This script shows the downloads count of the GitHub repositories.
 
-Developers must uploads archive files as release, an example is on [GitHub Blog - Release Your Software](https://github.com/blog/1547-release-your-software).
+You must put the archive file in a GitHub release, an example is on [GitHub Blog - Release Your Software](https://github.com/blog/1547-release-your-software).
 
-To get downloads count, you need to launch (no password needed):
+In order to get the downloads count of all GitHub repositories of a specific user, you need to execute:
 
     ./gdc github-username
 
-You can specify one project (no password needed):
+You can specify a single project:
 
     ./gdc github-username github-projectname
 
-For example:
+Example:
 
     ./gdc rethinkdb
 
@@ -24,9 +24,4 @@ output is:
     rethinkdb-1.7.0.x86_64.rpm: 450 downloads
     rethinkdb-1.6.1.dmg: 455 downloads
     
-A tutorial how to run python scripts on Windows can be found [here](http://pythoncentral.io/execute-python-script-file-shell/ "How to Run a Python Script via a File or the Shell").
-
-To authenticate with GitHub, fetch an OATH token from your GitHub user settings and export it in your shell as $GITHUB_TOKEN.
-
-Please signal issues and requests on [Project page](https://github.com/mmilidoni/github-downloads-count)
-
+If you need to run python scripts on Windows, see [here](http://pythoncentral.io/execute-python-script-file-shell/ "How to Run a Python Script via a File or the Shell").
