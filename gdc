@@ -4,17 +4,17 @@ import os
 import sys
 
 if (len(sys.argv) < 2):
-    print "Usage: " + sys.argv[0] + " github-user [github-project]"
+    print ("Usage: " + sys.argv[0] + " github-user [github-project]")
     exit(1)
 
 try:
    import requests
 except ImportError:
-    print "Error: requests is not installed"
-    print "Installing Requests is simple with pip:\n  pip install requests"
-    print "More info: http://docs.python-requests.org/en/latest/"
+    print ("Error: requests is not installed")
+    print ("Installing Requests is simple with pip:\n  pip install requests")
+    print ("More info: http://docs.python-requests.org/en/latest/")
     exit(1)
-import cStringIO
+import io
 import json
 
 
@@ -54,7 +54,7 @@ else:
 
 
 for full_name in full_names:
-    buf = cStringIO.StringIO()
+    buf = io.StringIO()
     total_count = 0
     try:
         r = requests.get('https://api.github.com/repos/' + full_name + '/releases', headers=headers)
@@ -71,8 +71,7 @@ for full_name in full_names:
                         asset['name'],
                     ))
             else:
-                print "No data"
+                print ("No data")
     except:
         pass
     print('%d\tTotal Downloads'%total_count)
-
