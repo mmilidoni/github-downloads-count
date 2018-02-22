@@ -80,4 +80,4 @@ for full_name in full_names:
                 print ("No data")
     except:
         pass
-    print('%d\tTotal Downloads'%total_count)
+    print('%d\tTotal Downloads for repo %s' % (total_count, full_name))
