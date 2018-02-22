@@ -70,7 +70,8 @@ for full_name in full_names:
                 for asset in p['assets']:
                     total_count += asset['download_count']
                     date = asset['updated_at'].split('T')[0]
-                    print('%d\t%s\t%s'%(
+                    print('Repo: %s\tCount: %d\tDate: %s\tAsset: %s'%(
+                        full_name,
                         asset['download_count'],
                         date,
                         asset['name'],
