@@ -14,9 +14,11 @@ except ImportError:
     print ("Installing Requests is simple with pip:\n  pip install requests")
     print ("More info: http://docs.python-requests.org/en/latest/")
     exit(1)
-import io
 import json
-
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 def dict_to_object(d):
     if '__class__' in d:
@@ -32,8 +34,11 @@ def dict_to_object(d):
 
 
 def ensure_str(s):
-    if isinstance(s, unicode):
-        s = s.encode('utf-8')
+    try:
+        if isinstance(s, unicode):
+            s = s.encode('utf-8')
+    except:
+        pass
     return s
 
 full_names = []
@@ -45,7 +50,7 @@ if "GITHUB_TOKEN" in os.environ:
 if len(sys.argv) == 3:
     full_names.append(sys.argv[1] + "/" + sys.argv[2])
 else:
-    buf = cStringIO.StringIO()
+    buf = StringIO()
     r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos', headers=headers)
     myobj = r.json()
 
@@ -54,7 +59,7 @@ else:
 
 
 for full_name in full_names:
-    buf = io.StringIO()
+    buf = StringIO()
     total_count = 0
     try:
         r = requests.get('https://api.github.com/repos/' + full_name + '/releases', headers=headers)
@@ -65,7 +70,8 @@ for full_name in full_names:
                 for asset in p['assets']:
                     total_count += asset['download_count']
                     date = asset['updated_at'].split('T')[0]
-                    print('%d\t%s\t%s'%(
+                    print('Repo: %s\tCount: %d\tDate: %s\tAsset: %s'%(
+                        full_name,
                         asset['download_count'],
                         date,
                         asset['name'],
@@ -74,4 +80,4 @@ for full_name in full_names:
                 print ("No data")
     except:
         pass
-    print('%d\tTotal Downloads'%total_count)
+    print('%d\tTotal Downloads for repo %s' % (total_count, full_name))
