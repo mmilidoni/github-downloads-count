@@ -53,10 +53,10 @@ if len(sys.argv) == 3:
 else:
     buf = StringIO()
     r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos', headers=headers)
-    myobj = r.json()
+    repos = r.json()
 
-    for rep in myobj:
-        full_names.insert(0, ensure_str(rep['full_name']))
+    for repo in repos:
+        full_names.insert(0, ensure_str(repo['full_name']))
 
 
 for full_name in full_names:
