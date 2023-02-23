@@ -2,6 +2,7 @@
 
 import os
 import sys
+import itertools
 
 if (len(sys.argv) < 2):
     print ("Usage: " + sys.argv[0] + " github-user [github-project]")
@@ -52,22 +53,33 @@ if len(sys.argv) == 3:
 else:
     buf = StringIO()
     r = requests.get('https://api.github.com/users/' + sys.argv[1] + '/repos', headers=headers)
-    myobj = r.json()
+    repos = r.json()
 
-    for rep in myobj:
-        full_names.insert(0, ensure_str(rep['full_name']))
+    for repo in repos:
+        full_names.insert(0, ensure_str(repo['full_name']))
 
 
 for full_name in full_names:
     buf = StringIO()
     total_count = 0
     try:
-        r = requests.get('https://api.github.com/repos/' + full_name + '/releases', headers=headers)
-        myobj = r.json()
+        page = 1
 
-        for p in myobj:
-            if "assets" in p:
-                for asset in p['assets']:
+        # Max count of results returned by the API
+        PER_PAGE = 100
+
+        for page in itertools.count(1):
+            releases = requests.get('https://api.github.com/repos/' + full_name + '/releases?per_page=100&page=' + str(page), headers=headers).json()
+
+            # Page is empty, we got all the results
+            if not releases:
+                break
+
+            for r in releases:
+                if "assets" not in r:
+                    print ('Repo: %s\t No assets') % (full_name,)
+                    continue
+                for asset in r['assets']:
                     total_count += asset['download_count']
                     date = asset['updated_at'].split('T')[0]
                     print('Repo: %s\tCount: %d\tDate: %s\tAsset: %s'%(
@@ -76,8 +88,7 @@ for full_name in full_names:
                         date,
                         asset['name'],
                     ))
-            else:
-                print ("No data")
-    except:
-        pass
+    except Exception as e:
+        print ('Exception while fetching releases for repo %s: %s') % (full_name, e)
+
     print('%d\tTotal Downloads for repo %s' % (total_count, full_name))
