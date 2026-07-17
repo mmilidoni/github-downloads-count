@@ -38,7 +38,7 @@ def ensure_str(s):
     try:
         if isinstance(s, unicode):
             s = s.encode('utf-8')
-    except:
+    except Exception:
         pass
     return s
 
